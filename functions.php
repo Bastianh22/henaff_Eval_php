@@ -70,8 +70,10 @@ function get_link_by_id($link_id)
     $stmt->bindParam(":link_id", $link_id);
     $stmt->setFetchMode(PDO::FETCH_ASSOC);
     
+    // execution de la requête
+    $stmt->execute();
     // on récupère un seul résultats
-    $select = $stmt->fetch();
+    $select = $stmt->fetchAll();
 
     return $select;
 }
@@ -91,7 +93,7 @@ function update_link($data)
     $nbLigne=0;
 
     // création de la requête préparé
-    $stmt = $connexion->prepare("UPDATE links SET `link_id` = :link_id, `title` = :title, `url` = :url_link");
+    $stmt = $connexion->prepare("UPDATE links SET `title` = :title, `url` = :url_link WHERE `link_id` = :link_id");
 
     // création de paramètre pour sécurisé la requête
     $stmt->bindParam(":link_id", $data['link_id']);

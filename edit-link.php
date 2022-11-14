@@ -15,6 +15,11 @@
       
       // envoie les informations à la fonction connect dans le fichier function puis les assigne à une variable
       $enregistrement = update_link($data);
+      if($enregistrement == true)
+      {
+        echo 'Vous avez modifié un lien';
+        header('Refresh: 5; url=index.php');
+      }
     }
   }
   if(isset($_GET['link_id']))
@@ -65,35 +70,34 @@
       <div class="container h-100">
         <div class="row justify-content-center h-50">
           <div class="col-md-6 shadow p-3 pt-5">
-            <h2 class="mb-3">Éditer le lien # 1</h2>
-            <div class="mb-3">
-              <form action="" method="post">
+            <?php
+              $links = get_link_by_id($link_id);
+              foreach($links as $link)
+              {
+                ?>
+                  <h2 class="mb-3">Éditer le lien # <?=$link['link_id']?></h2>
+                  <div class="mb-3">
+                    <form action="" method="post">
+                      <div class="mb-3">
+                        <div class="form-floating">
+                          <input type="text" class="form-control" id="title" name="title" value="<?= $link['title']?>"/>
+                          <label for="title">Titre</label>
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <div class="form-floating">
+                          <input type="url" class="form-control" id="url" name="url" value="<?= $link['url']?>"/>
+                          <label for="url">Lien</label>
+                        </div>
+                      </div>
+                      <div class="col-md-auto d-flex">
+                        <button class="btn btn-primary btn-lg">Enregister</button>
+                      </div>
+                    </form>
+                  </div>
                 <?php
-                  $linkbyid = get_link_by_id($link_id);
-
-                  foreach($linkbyid as $link)
-                  {
-                    ?>
-                    <div class="mb-3">
-                      <div class="form-floating">
-                        <input type="text" class="form-control" id="title" name="title" value="<?= $linkid['title']?>"/>
-                        <label for="title">Titre</label>
-                      </div>
-                    </div>
-                    <div class="mb-3">
-                      <div class="form-floating">
-                        <input type="url" class="form-control" id="url" name="url" value="<?= $linkid['url']?>"/>
-                        <label for="url">Lien</label>
-                      </div>
-                    </div>
-                    <div class="col-md-auto d-flex">
-                      <button class="btn btn-primary btn-lg">Enregister</button>
-                    </div>
-                    <?php
-                  }
-                  ?>
-              </form>
-            </div>
+              }
+            ?>
           </div>
         </div>
       </div>
@@ -110,6 +114,6 @@
 }
 else
 {
-    header('Refresh: 5; url=index.php');
+    header('Location: index.php');
 }
 ?>
